@@ -1,0 +1,2 @@
+# Secrets Scanning with GitLeaks
+

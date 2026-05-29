@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: User Management API — P01 demo application
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 10
+    CodeUri: src/
+    Environment:
+      Variables:
+        LOG_LEVEL: INFO
+
+Resources:
+  ListUsersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: list_users.app.handler
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: GET
+
+  GetUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get_user.app.handler
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /users/{user_id}
+            Method: GET
+
+  ModifyUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: modify_user.app.handler
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /users/{user_id}
+            Method: PUT
+
+Outputs:
+  ApiEndpoint:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
